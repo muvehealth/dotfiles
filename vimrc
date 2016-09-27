@@ -1,5 +1,7 @@
 " Leader
 let mapleader = " "
+nmap \ <space>
+nmap , <space>
 
 set backspace=2   " Backspace deletes like most programs in insert mode
 set nobackup
@@ -8,9 +10,16 @@ set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitigno
 set history=50
 set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
-set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
+
+" Better search behavior
+set hlsearch      " highlight all search matches
+set incsearch     " do incremental searching
+set ignorecase    " case-insensitive search
+set smartcase     " trigger case-sensitive search with uppercase query
+" Clear search highlighting
+map <Leader><space> :nohl<cr>
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -133,6 +142,14 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+
+" vim tab navigation
+nnoremap th :tabfirst<CR>
+nnoremap tj :tabprev<CR>
+nnoremap tk :tabnext<CR>
+nnoremap tl :tablast<CR>
+nnoremap tc :tabclose<CR>
+nnoremap tn :tabnew<CR>
 
 " configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
