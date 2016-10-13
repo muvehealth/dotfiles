@@ -39,6 +39,10 @@ _load_settings() {
 }
 _load_settings "$HOME/.zsh/configs"
 
+# chruby
+[[ -f /usr/local/share/chruby/chruby.sh ]] && source /usr/local/share/chruby/chruby.sh
+[[ -f /usr/local/share/chruby/auto.sh ]] && source /usr/local/share/chruby/auto.sh
+
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
