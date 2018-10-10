@@ -25,3 +25,6 @@
   autosquash = true
 [include]
   path = ~/.gitconfig.local
+[user]
+name = Hilary Denton
+email = hilaryous.denton@gmail.com

@@ -4,10 +4,10 @@ nmap \ <space>
 nmap , <space>
 
 set backspace=2   " Backspace deletes like most programs in insert mode
-set nobackup
-set nowritebackup
+set nobackup      " no backup files
+set nowritebackup " no backup file while editing
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
-set history=50
+set history=50    " history of commands
 set ruler         " show the cursor position all the time
 set showcmd       " display incomplete commands
 set laststatus=2  " Always display the status line
@@ -18,6 +18,7 @@ set hlsearch      " highlight all search matches
 set incsearch     " do incremental searching
 set ignorecase    " case-insensitive search
 set smartcase     " trigger case-sensitive search with uppercase query
+
 " Clear search highlighting
 map <Leader><space> :nohl<cr>
 
@@ -36,7 +37,7 @@ if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
   runtime! macros/matchit.vim
 endif
 
-filetype plugin indent on
+filetype plugin indent on " detect filetype on edit, load plugin file for detected filetype, load indent file for detected filetype
 
 augroup vimrcEx
   autocmd!
@@ -52,7 +53,8 @@ augroup vimrcEx
   " Set syntax highlighting for specific file types
   autocmd BufRead,BufNewFile Appraisals set filetype=ruby
   autocmd BufRead,BufNewFile *.md set filetype=markdown
-  autocmd BufRead,BufNewFile .{jscs,jshint,eslint}rc set filetype=json
+  autocmd BufRead,BufNewFile .env.* set filetype=sh
+  autocmd BufRead,BufNewFile *.{flow} set filetype=javascript
 augroup END
 
 " When the type of shell script is /bin/sh, assume a POSIX-compatible
@@ -89,8 +91,8 @@ if executable('ag')
   endif
 endif
 
-" Make it obvious where 80 characters is
-set textwidth=80
+" Make it obvious where 100 characters is
+set textwidth=100
 set colorcolumn=+1
 
 " Numbers
@@ -113,7 +115,7 @@ inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <S-Tab> <c-n>
 
 " Switch between the last two files
-nnoremap <leader><leader> <c-^>
+nnoremap <Leader>O <c-^>
 
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
@@ -155,11 +157,17 @@ nnoremap tn :tabnew<CR>
 " nerdtree
 map <Leader>n :NERDTreeToggle<cr>
 
-" configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-let g:syntastic_eruby_ruby_quiet_messages =
-    \ {"regex": "possibly useless use of a variable in void context"}
+" configure ale
+let g:ale_fix_on_save=1
+let g:ale_fixers={'javascript': ['eslint']}
+let g:ale_linters={'html': ['tidy']}
+let g:ale_history_log_output=0
+let g:ale_javascript_eslint_executable='eslint_d'
+let g:ale_javascript_eslint_use_global=1
+let g:ale_open_list='on_save'
+let g:ale_sign_error='☠️'
+let g:ale_sign_warning='⚠️'
+" let g:ale_echo_msg_format = '%linter% says %s'
 
 " Set spellfile to location that is guaranteed to exist, can be symlinked to
 " Dropbox or kept in Git and managed outside of thoughtbot/dotfiles using rcm.
@@ -168,6 +176,9 @@ set spellfile=$HOME/.vim-spell-en.utf-8.add
 " Autocomplete with dictionary words when spell check is on
 set complete+=kspell
 
+" Set spellcheck for md files
+autocmd BufRead,BufNewFile *.md setlocal spell
+
 " Always use vertical diffs
 set diffopt+=vertical
 
@@ -175,3 +186,11 @@ set diffopt+=vertical
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+" Pretty print json
+map <Leader>j :%!python -m json.tool<cr>
+
+" flow
+let g:javascript_plugin_flow=1
+
+let g:airline_theme='fairyfloss'
